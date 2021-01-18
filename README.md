@@ -27,7 +27,7 @@ But browsers aren’t the only consumer of content out there. We also have scree
 
 ## What about Microformats?
 
-A [measure microformat has been discussed in the past](https://microformats.org/wiki/measure-brainstorming) but the proposals either include a multitude of elements and attributes or severely limits the text content inside each element. Furthermore, the fact that a microformat did not gain popularity can not be an indicator of wether a similar HTML element would be successful. Microformats are heavier to write, include more attributes to configure (classes and other attributes) and are bound to use a longer-named tag than `<m>`.
+A [measure microformat has been discussed in the past](https://microformats.org/wiki/measure-brainstorming) but the proposals either include a multitude of elements and attributes or severely limits the text content inside each element. Furthermore, the fact that a microformat did not gain popularity can not be an indicator of whether a similar HTML element would be successful. Microformats are heavier to write, include more attributes to configure (classes and other attributes) and are bound to use a longer-named tag than `<m>`.
 The drawbacks of using the microformat proposal linked above are:
 - it includes prices and currencies inside the specification, which are volatile units that change their relation to one another hundreds of times per day
 - will require using non-semantic inline elements with a longer name, which is less readable than a dedicated `<m>` tag
@@ -38,7 +38,7 @@ The drawbacks of using the microformat proposal linked above are:
 
 ## Why have `value` and `unit` attributes?
 
-Currently no simple program can parse and understand physical measurements inside a casually-phrased text because not all measurements consist of a simple number and a unit next to it.
+Currently no simple program can parse and understand physical measurements inside a casually phrased text because not all measurements consist of a simple number and a unit next to it.
 
 The spirit of the Web isn't about forcing web authors to write in a specific machine-readable format with certain units (e.g. "the car's power is 84 kilowatts"), rather it encourages authors to phrase their text content as they will with the _option_ to mark it up for hooks, semantics, or machine readability.
 
@@ -81,7 +81,7 @@ Here is an example list of accepted `unit` abbreviations that can be easily exte
 The options I found for a standard reference to be used for the `unit` attribute basically look like that:
 - The major international standards that list measurement units and propose abbreviations for them are [ISO/IEC 80000](https://www.iso.org/standard/30669.html) - behind a paywall and focused on Metric units
 - [IEEE Std 260.1](https://ieeexplore.ieee.org/document/1337729) that defines "Standard Letter Symbols for Units of Measurement (SI Customary Inch-Pound Units, and Certain Other Units)" but is behind a paywall
-- The [UCUM's case-sensitive units](https://ucum.org/ucum.html) which include all units listed in ISO 1000, ISO 2955-1983, ANSI X3.50-1986, HL7 and ENV 12435, and is designed primarily for machine-to-machine communitaction, many unit codes are not very user-friendly
+- The [UCUM's case-sensitive units](https://ucum.org/ucum.html) which include all units listed in ISO 1000, ISO 2955-1983, ANSI X3.50-1986, HL7 and ENV 12435, and is designed primarily for machine-to-machine communication, many unit codes are not very user-friendly
 - [Wikipedia's own "unit-codes"](https://en.wikipedia.org/wiki/Template:Convert/list_of_units) that are designed to be unambiguous and easy-to-use for conversion purposes, they include the most popular units and are made to be easy for human use. Licensed by [Creative Commons Attributions ShareAlike 3.0](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License), which is [compatible](https://wiki.creativecommons.org/wiki/Wiki/cc_license_compatibility) with the "Creative Commons Attribution 4.0 International" license of [WHATWG's HTML repository](https://github.com/whatwg/html/blob/master/LICENSE).
 
 </details>
@@ -98,45 +98,42 @@ Browsers already offer us translations of a whole web page (Chrome and Safari), 
 
 Being able to quickly convert measurements without interrupting the user flow will save both time and bandwidth for all who this feature.
 
-The demand for unit conversion is apprently quite strong - search queries for unit conversion are so popular that Google [added a unit converter UI calculator](https://news.softpedia.com/news/Google-Builds-a-Unit-Converter-in-the-Search-Page-281183.shtml) to their search results more than 8 years ago, but in fact the search engine has been [answering conversion queries for at least 16 years](https://arxiv.org/abs/physics/0411198) - around the time Google became a public company (and before Gmail and Google Translate even existed).
+The demand for unit conversion is apparently quite strong - search queries for unit conversion are so popular that Google [added a unit converter UI calculator](https://news.softpedia.com/news/Google-Builds-a-Unit-Converter-in-the-Search-Page-281183.shtml) to their search results more than 8 years ago, but in fact the search engine has been [answering conversion queries for at least 16 years](https://arxiv.org/abs/physics/0411198) - around the time Google became a public company (and before Gmail and Google Translate even existed).
 
 
 ## Conversion
 
-Converting units is a task typically delegated to users, who usually interrupt their reading journey by opening another tool, popup, or search engine to convert units. This is clearly inefficient, however, the currently available alternatives are often not ideal or possible.
+Converting units is a task typically delegated to users, who usually interrupt their reading journey by opening another tool, popup, or search engine to convert units. This is clearly inefficient; however, the currently available alternatives are often not ideal or possible.
 
 With `<m>`, web authors will have one more measurement declaration method to pick from:
 
-| HTML                                   | Conversion effort by | Converted unit availability          |
-|----------------------------------------|----------------------|--------------------------------------|
-| `61 miles`                             | users                | available in 3rd party tool manually |
-| `61 miles (100 km) `                   | author               | always visible                       |
+| HTML                                   | Conversion effort by | Converted unit availability     |
+|----------------------------------------|----------------------|---------------------------------|
+| `61 miles`                             | users                | manually from 3rd party tool    |
+| `61 miles (100 km) `                   | author               | always visible                  |
 | `{{convert\|61\|mi\|km\|abbr=on}}` <br>resulting in `61 miles (100 km)` | MediaWiki back end | always visible |
-| `<m unit='mi' value='61'>61 miles</m>` | JS on the front end  | available inline on-demand or automatically |
+| `<m unit="mi" value="61">61 miles</m>` | JS on the front end  | available inline on-demand or automatically |
 
-As demonstrated by this table, to avoid the human effort to convert units either the 3rd or 4th method should be used.
-A new standardized HTML element would be a solution that is always available.
-Doing these calculations on the back end is more efficient (at least computationally), but unfortunately these systems vary in functionality and are chosen after considering a plethora of other technical and organizational factors.
-
+As demonstrated by this table, to avoid the human effort either the 3rd or 4th method should be used for conversion. A new standardized HTML element would be a solution that is always available and back-end agnostic.
 
 Additionally, when using the `<m>` element the developer can announce whether the measurement is suitable for conversion with the optional attribute `convert`:
 ```
 convert="never|auto|eager"
 ```
 
-A `never` option would be suitable for measurements with established/settled units such as nanometers for CPU designs. 5nm is okay, 0.00000019685 inches isn't user-friendly even for those accustomed imperial unit. Another unit that is a de-facto international standard is the inch when used for screen diagonals and car tires.
+A `never` option would be suitable for measurements with de-facto standard units such as nanometers for CPU designs and inches for screen diagonals or car tires. Probably no person will ever need to know that a 5nm CPU is 0.00000019685 inches.
 
-The `auto` option is the default value and is the same as omitting the attribute. It will be up to the browser/user to decide whether to convert these.
+The `auto` option is the default value and is the same as omitting the attribute. It will be up to the script/browser/user to decide whether to convert these automatically or on-demand.
 
-The `eager` option is for values that will be certainly more understandable if converted to the users' preference. It signals that the value is appropriate for automatic conversion if a user preference/consent has been provided. An example would be a weather forecast website which would automatically display temperatures in a user's preferred unit (imagine building a weather website without the need to add options in the interface for °F/°C units).
+The `eager` option is for units that will be more understandable if converted to the users' preferred ones. It signals that the value is appropriate for automatic conversion if a user preference/consent has been provided.
 
 For this conversion system to work in a user-friendly way it also needs browser/OS unit option (metric, UK imperial, US imperial, etc) that users can set for their preferred units. This preference can be placed in one of several places:
 - in the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) JS object
 - in the [Navigator](https://developer.mozilla.org/en-US/docs/Web/API/Navigator) user agent interface which already provides read-only access [to the user's browser languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages)
-- any other place that offers access to user perferences in the web platform
+- any other place that offers access to user preferences in the web platform
 - a media feature similar to [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) and [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) that are accessible through both CSS and JavaScript
 
-Just a few years ago the [IndieUI: User Context](https://www.w3.org/TR/indie-ui-context/) W3C document proposed the ability for a "set of preferences that users can choose to expose to web applications", the listed examples include assistive tech used, preferred typography style, subtitle language, and even a desired subtitle background color. Adding a "unit language" preference here would be a nice fit that helps accessibility.
+Just a few years ago the [IndieUI: User Context](https://www.w3.org/TR/indie-ui-context/) W3C document proposed the ability for a "set of preferences that users can choose to expose to web applications", the listed examples include assistive tech used, preferred typography style, and even a desired subtitle background color. No mention of a preferred "unit language" though.
 
 
 ## A richer, more useful HTML
