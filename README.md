@@ -143,7 +143,7 @@ The web needs also more inline-level semantics, currently a limited number of su
 
 The proposed `<m>` element will not only bring the aforementioned benefits. Due to its attributes having an expected and clear structure they will become a set of hooks for CSS and JS that will be used by developers in many creative ways we cannot even envision.
 
-A [&lt;dfn&gt; element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dfn) might serve to identify the physical entity measured if placed inside the same `<p>` or `<section>` as the `<m>` element.
+A [&lt;dfn&gt; element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dfn) might serve to identify the physical entity measured if placed inside the same `<p>` or `<section>` as the `<m>` element. Alternatively, an [existing ARIA role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques#relationship_attributes) might be used such as "labeledby" or "describedby".
 
 
 ## Can `<m>` become widespread?
